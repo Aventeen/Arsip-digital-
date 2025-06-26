@@ -133,19 +133,11 @@
     </div>
 
     <script>
-        // Ini elemen tombol "Bawa Aku ke Catatan Acak!"
         const btn = document.getElementById("klik");
-
-        // Ini elemen audio (<audio id="sfx">) untuk suara klik
         const sfx = document.getElementById("sfx"); 
-
-        // Ini elemen kotak pencarian
         const kotakCari = document.getElementById("kotakCari");
-
-        // Ini semua elemen link catatan
         const daftarLinkCatatan = document.querySelectorAll("#daftarCatatan li a");
 
-        // Daftar semua halaman catatanmu (SUDAH DIISI DENGAN CONTOH)
         const semuaCatatan = [
             'catatan/belajar-js.html',
             'catatan/trik-css.html',
@@ -154,11 +146,21 @@
             'catatan/setup-laptop.html'
         ];
 
-        // --- Fungsi untuk Memutar Suara ---
+        // --- Variabel untuk Mengontrol Pemutaran Suara ---
+        let canPlaySoundFlag = true; // Flag untuk menandakan apakah suara bisa diputar
+        const soundCooldown = 150; // Durasi cooldown dalam milidetik (misal: 150ms)
+
+        // --- Fungsi untuk Memutar Suara dengan Cooldown ---
         function playClickSound() {
-            if (sfx) {
-                sfx.currentTime = 0; // Mulai suara dari awal
+            if (sfx && canPlaySoundFlag) { // Hanya putar jika tidak sedang cooldown
+                canPlaySoundFlag = false; // Set flag jadi false (sedang cooldown)
+                sfx.currentTime = 0; // Reset suara ke awal
                 sfx.play();
+
+                // Set timeout untuk mereset flag setelah cooldown
+                setTimeout(() => {
+                    canPlaySoundFlag = true;
+                }, soundCooldown);
             }
         }
 
@@ -166,22 +168,20 @@
         btn.addEventListener("click", () => {
             playClickSound(); // Putar suara saat tombol diklik
 
-            // Tambahkan efek animasi pada tombol
             btn.classList.add("effect");
 
-            // Pilih satu halaman secara acak
             const halamanAcak = semuaCatatan[Math.floor(Math.random() * semuaCatatan.length)];
 
-            // Setelah sedikit jeda, hapus efek dan pindah halaman
             setTimeout(() => {
                 btn.classList.remove("effect");
                 window.location.href = halamanAcak;
-            }, 200); // Jeda 200 milidetik
+            }, 200);
         });
 
         // --- Event Listener untuk Kotak Pencarian (saat mengetik) ---
-        kotakCari.addEventListener("keyup", () => {
-            playClickSound(); // Putar suara saat tombol keyboard dilepas (setelah mengetik)
+        // Menggunakan 'input' event untuk respons lebih cepat saat mengetik
+        kotakCari.addEventListener("input", () => {
+            playClickSound(); // Putar suara saat ada input
             cariCatatan(); // Jalankan fungsi pencarian
         });
 
@@ -189,7 +189,6 @@
         daftarLinkCatatan.forEach(link => {
             link.addEventListener("click", () => {
                 playClickSound(); // Putar suara saat link diklik
-                // Tidak perlu setTimeout di sini karena browser akan langsung pindah halaman
             });
         });
 
