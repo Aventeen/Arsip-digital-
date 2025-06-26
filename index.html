@@ -113,7 +113,7 @@
         <h1>Perpustakaan Digital Pribadi Bro Elite</h1>
         <p>Cari catatan pentingmu di sini!</p>
 
-        <input type="text" id="kotakCari" onkeyup="cariCatatan()" placeholder="Ketik judul catatan...">
+        <input type="text" id="kotakCari" placeholder="Ketik judul catatan...">
 
         <button id="klik">
             Bawa Aku ke Catatan Acak!
@@ -137,7 +137,13 @@
         const btn = document.getElementById("klik");
 
         // Ini elemen audio (<audio id="sfx">) untuk suara klik
-        const sfx = document.getElementById("sfx");
+        const sfx = document.getElementById("sfx"); 
+
+        // Ini elemen kotak pencarian
+        const kotakCari = document.getElementById("kotakCari");
+
+        // Ini semua elemen link catatan
+        const daftarLinkCatatan = document.querySelectorAll("#daftarCatatan li a");
 
         // Daftar semua halaman catatanmu (SUDAH DIISI DENGAN CONTOH)
         const semuaCatatan = [
@@ -148,28 +154,46 @@
             'catatan/setup-laptop.html'
         ];
 
-        // Ini adalah fungsi yang akan dijalankan SETIAP KALI tombol diklik
-        btn.addEventListener("click", () => {
-            // 1. Putar suara
+        // --- Fungsi untuk Memutar Suara ---
+        function playClickSound() {
             if (sfx) {
-                sfx.currentTime = 0;
+                sfx.currentTime = 0; // Mulai suara dari awal
                 sfx.play();
             }
+        }
 
-            // 2. Tambahkan efek animasi pada tombol (kelas "effect")
+        // --- Event Listener untuk Tombol "Bawa Aku ke Catatan Acak!" ---
+        btn.addEventListener("click", () => {
+            playClickSound(); // Putar suara saat tombol diklik
+
+            // Tambahkan efek animasi pada tombol
             btn.classList.add("effect");
 
-            // 3. Pilih satu halaman secara acak dari daftar semuaCatatan
+            // Pilih satu halaman secara acak
             const halamanAcak = semuaCatatan[Math.floor(Math.random() * semuaCatatan.length)];
 
-            // 4. Setelah sedikit jeda (agar suara sempat main dan animasi terlihat), hapus efek dan pindah halaman
+            // Setelah sedikit jeda, hapus efek dan pindah halaman
             setTimeout(() => {
                 btn.classList.remove("effect");
                 window.location.href = halamanAcak;
-            }, 200); // Jeda 200 milidetik (0.2 detik).
+            }, 200); // Jeda 200 milidetik
         });
 
-        // Ini fungsi untuk fitur pencarian
+        // --- Event Listener untuk Kotak Pencarian (saat mengetik) ---
+        kotakCari.addEventListener("keyup", () => {
+            playClickSound(); // Putar suara saat tombol keyboard dilepas (setelah mengetik)
+            cariCatatan(); // Jalankan fungsi pencarian
+        });
+
+        // --- Event Listener untuk Setiap Link Catatan ---
+        daftarLinkCatatan.forEach(link => {
+            link.addEventListener("click", () => {
+                playClickSound(); // Putar suara saat link diklik
+                // Tidak perlu setTimeout di sini karena browser akan langsung pindah halaman
+            });
+        });
+
+        // --- Fungsi untuk Fitur Pencarian ---
         function cariCatatan() {
             const inputan = document.getElementById('kotakCari').value.toLowerCase();
             const semuaItem = document.querySelectorAll('#daftarCatatan li');
