@@ -9,18 +9,20 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #f4f4f4;
-            color: #333;
+            background-color: #f4f4f4; /* Warna latar belakang terang */
+            color: #333; /* Warna teks terang */
             line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease; /* Transisi halus */
         }
 
         .container {
             max-width: 800px;
             margin: 20px auto;
             padding: 30px;
-            background-color: #fff;
+            background-color: #fff; /* Warna kontainer terang */
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Transisi halus */
         }
 
         h1 {
@@ -43,9 +45,12 @@
             border-radius: 6px;
             font-size: 16px;
             box-sizing: border-box;
+            background-color: #fff; /* Latar belakang input terang */
+            color: #333; /* Teks input terang */
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
 
-        /* CSS dasar untuk tombol dengan ID "klik" */
+        /* CSS dasar untuk tombol "Bawa Aku ke Catatan Acak!" */
         #klik {
             width: 100%;
             padding: 12px;
@@ -64,13 +69,13 @@
             user-select: none;
         }
 
-        /* Efek yang diterapkan saat tombol diklik (kelas "effect" akan ditambahkan oleh JS) */
+        /* Efek yang diterapkan saat tombol "Bawa Aku ke Catatan Acak!" diklik */
         #klik.effect {
-            transform: scale(0.95); /* Tombol mengecil sedikit (efek ditekan) */
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset; /* Bayangan ke dalam */
+            transform: scale(0.95);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset;
         }
 
-        /* Memastikan tombol kembali ke state normal saat kelas "effect" dihapus */
+        /* Memastikan tombol "Bawa Aku ke Catatan Acak!" kembali ke state normal */
         #klik:not(.effect) {
             transform: scale(1);
             box-shadow: none;
@@ -83,12 +88,14 @@
             border: 1px solid #eee;
             border-radius: 6px;
             overflow: hidden;
+            transition: border-color 0.3s ease;
         }
 
         #daftarCatatan li {
             padding: 15px;
             border-bottom: 1px solid #eee;
             background-color: #fdfdfd;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         #daftarCatatan li:last-child {
@@ -100,15 +107,93 @@
             color: #007bff;
             font-weight: 500;
             display: block;
+            transition: color 0.3s ease;
         }
 
         #daftarCatatan a:hover {
             text-decoration: underline;
             color: #0056b3;
         }
+
+        /* --- DARK MODE STYLES --- */
+        body.dark-mode {
+            background-color: #282c34; /* Latar belakang gelap */
+            color: #abb2bf; /* Warna teks gelap */
+        }
+
+        body.dark-mode .container {
+            background-color: #3a404a; /* Kontainer gelap */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode h1 {
+            color: #61afef; /* Warna judul gelap */
+        }
+
+        body.dark-mode p {
+            color: #abb2bf;
+        }
+
+        body.dark-mode #kotakCari {
+            background-color: #4b5263; /* Latar belakang input gelap */
+            color: #abb2bf; /* Teks input gelap */
+            border-color: #5c6370;
+        }
+
+        body.dark-mode #daftarCatatan {
+            border-color: #4b5263;
+        }
+
+        body.dark-mode #daftarCatatan li {
+            background-color: #3a404a; /* Latar belakang item list gelap */
+            border-color: #4b5263;
+        }
+
+        body.dark-mode #daftarCatatan a {
+            color: #98c379; /* Warna link gelap */
+        }
+
+        body.dark-mode #daftarCatatan a:hover {
+            color: #e5c07b;
+        }
+
+        /* --- MODE TOGGLE BUTTON --- */
+        #modeToggle {
+            position: fixed; /* Posisi tetap di layar */
+            top: 20px; /* Jarak dari atas */
+            left: 20px; /* Jarak dari kiri */
+            background-color: #6c757d; /* Warna abu-abu */
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000; /* Pastikan tombol di atas elemen lain */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: background-color 0.3s ease, transform 0.1s ease-out;
+        }
+
+        #modeToggle:hover {
+            background-color: #5a6268;
+        }
+
+        #modeToggle:active {
+            transform: scale(0.98); /* Efek klik */
+        }
+
+        /* Gaya tombol mode toggle saat Dark Mode aktif */
+        body.dark-mode #modeToggle {
+            background-color: #5c6370; /* Warna tombol gelap */
+        }
+        body.dark-mode #modeToggle:hover {
+            background-color: #4b5263;
+        }
     </style>
 </head>
 <body>
+    <button id="modeToggle">Mode Gelap</button>
+
     <div class="container">
         <h1>Perpustakaan Digital Pribadi Bro Elite</h1>
         <p>Cari catatan pentingmu di sini!</p>
@@ -137,6 +222,8 @@
         const sfx = document.getElementById("sfx"); 
         const kotakCari = document.getElementById("kotakCari");
         const daftarLinkCatatan = document.querySelectorAll("#daftarCatatan li a");
+        const modeToggleBtn = document.getElementById("modeToggle"); // Elemen tombol mode toggle
+        const body = document.body; // Elemen <body>
 
         const semuaCatatan = [
             'catatan/belajar-js.html',
@@ -147,17 +234,15 @@
         ];
 
         // --- Variabel untuk Mengontrol Pemutaran Suara ---
-        let canPlaySoundFlag = true; // Flag untuk menandakan apakah suara bisa diputar
-        const soundCooldown = 150; // Durasi cooldown dalam milidetik (misal: 150ms)
+        let canPlaySoundFlag = true;
+        const soundCooldown = 150; // Cooldown 150ms
 
         // --- Fungsi untuk Memutar Suara dengan Cooldown ---
         function playClickSound() {
-            if (sfx && canPlaySoundFlag) { // Hanya putar jika tidak sedang cooldown
-                canPlaySoundFlag = false; // Set flag jadi false (sedang cooldown)
-                sfx.currentTime = 0; // Reset suara ke awal
+            if (sfx && canPlaySoundFlag) {
+                canPlaySoundFlag = false;
+                sfx.currentTime = 0;
                 sfx.play();
-
-                // Set timeout untuk mereset flag setelah cooldown
                 setTimeout(() => {
                     canPlaySoundFlag = true;
                 }, soundCooldown);
@@ -166,35 +251,31 @@
 
         // --- Event Listener untuk Tombol "Bawa Aku ke Catatan Acak!" ---
         btn.addEventListener("click", () => {
-            playClickSound(); // Putar suara saat tombol diklik
-
+            playClickSound();
             btn.classList.add("effect");
-
             const halamanAcak = semuaCatatan[Math.floor(Math.random() * semuaCatatan.length)];
-
             setTimeout(() => {
                 btn.classList.remove("effect");
                 window.location.href = halamanAcak;
             }, 200);
         });
 
-        // --- Event Listener untuk Kotak Pencarian (saat mengetik) ---
-        // Menggunakan 'input' event untuk respons lebih cepat saat mengetik
+        // --- Event Listener untuk Kotak Pencarian (saat ada input) ---
         kotakCari.addEventListener("input", () => {
-            playClickSound(); // Putar suara saat ada input
-            cariCatatan(); // Jalankan fungsi pencarian
+            playClickSound();
+            cariCatatan();
         });
 
         // --- Event Listener untuk Setiap Link Catatan ---
         daftarLinkCatatan.forEach(link => {
             link.addEventListener("click", () => {
-                playClickSound(); // Putar suara saat link diklik
+                playClickSound();
             });
         });
 
         // --- Fungsi untuk Fitur Pencarian ---
         function cariCatatan() {
-            const inputan = document.getElementById('kotakCari').value.toLowerCase();
+            const inputan = kotakCari.value.toLowerCase();
             const semuaItem = document.querySelectorAll('#daftarCatatan li');
 
             semuaItem.forEach(item => {
@@ -209,6 +290,45 @@
                 }
             });
         }
+
+        // --- LOGIKA DARK/LIGHT MODE ---
+
+        // Fungsi untuk mengaplikasikan mode
+        function applyMode(mode) {
+            if (mode === 'dark') {
+                body.classList.add('dark-mode');
+                modeToggleBtn.textContent = 'Mode Terang';
+            } else {
+                body.classList.remove('dark-mode');
+                modeToggleBtn.textContent = 'Mode Gelap';
+            }
+        }
+
+        // Cek preferensi mode dari localStorage saat halaman dimuat
+        const savedMode = localStorage.getItem('themeMode');
+        if (savedMode) {
+            applyMode(savedMode);
+        } else {
+            // Jika belum ada preferensi, cek preferensi sistem (opsional)
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                applyMode('dark');
+            } else {
+                applyMode('light');
+            }
+        }
+
+        // Event listener untuk tombol mode toggle
+        modeToggleBtn.addEventListener("click", () => {
+            playClickSound(); // Mainkan suara saat tombol mode toggle diklik
+
+            if (body.classList.contains('dark-mode')) {
+                applyMode('light');
+                localStorage.setItem('themeMode', 'light'); // Simpan preferensi
+            } else {
+                applyMode('dark');
+                localStorage.setItem('themeMode', 'dark'); // Simpan preferensi
+            }
+        });
     </script>
 </body>
 </html>
