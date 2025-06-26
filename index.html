@@ -3,21 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perpustakaan Pribadi Gue</title>
+    <title>Arsip Digital Pribadi</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: #f0f2f5;
             color: #1c1e21;
             padding: 20px;
+            margin: 0;
         }
         .container {
             max-width: 700px;
             margin: 0 auto;
             background-color: #fff;
-            padding: 20px;
+            padding: 20px 30px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
         }
         #kotakCari {
             width: 100%;
@@ -53,14 +58,14 @@
 <body>
 
     <div class="container">
-        <h2>Perpustakaan Pribadi Gue</h2>
+        <h1>Perpustakaan Digital Pribadi</h1>
         <p>Cari catatan pentingmu di sini.</p>
 
         <input type="text" id="kotakCari" onkeyup="cariCatatan()" placeholder="Ketik judul catatan...">
 
         <button onclick="bukaCatatanAcak()" style="width:100%; padding: 12px; margin-bottom: 20px; border: none; background-color: #28a745; color: white; border-radius: 6px; font-size: 16px; cursor: pointer;">
-    Bawa Aku ke Catatan Acak!
-</button>
+            Bawa Aku ke Catatan Acak!
+        </button>
 
         <ul id="daftarCatatan">
             <li><a href="catatan/belajar-js.html">Belajar Dasar JavaScript</a></li>
@@ -68,65 +73,38 @@
             <li><a href="catatan/ide-proyek.html">Kumpulan Ide Proyek Web Keren</a></li>
             <li><a href="catatan/perintah-git.html">Perintah Dasar Git yang Wajib Hafal</a></li>
             <li><a href="catatan/setup-laptop.html">Cara Setup Laptop Baru untuk Ngoding</a></li>
-            </ul>
+        </ul>
     </div>
 
     <script>
-    function cariCatatan() {
-        // Ambil teks yang diketik di kotak pencarian, ubah jadi huruf kecil
-        const inputan = document.getElementById('kotakCari').value.toLowerCase();
-        
-        // Ambil semua elemen 'li' (item list) dari daftar catatan
-        const semuaItem = document.querySelectorAll('#daftarCatatan li');
-
-        // Loop atau periksa satu per satu setiap item
-        semuaItem.forEach(item => {
-            // Ambil teks judul dari link di dalam item, ubah jadi huruf kecil
-            const judul = item.textContent.toLowerCase();
-
-            // Cek: Apakah judul catatan mengandung teks yang diketik?
-            if (judul.includes(inputan)) {
-                item.style.display = ""; // Kalau cocok, tampilkan itemnya
-            } else {
-                item.style.display = "none"; // Kalau nggak cocok, sembunyikan
-            }
-        });
-    }
-    <script>
-    // Fungsi untuk pencarian
-    function cariCatatan() {
-        const inputan = document.getElementById('kotakCari').value.toLowerCase();
-        const semuaItem = document.querySelectorAll('#daftarCatatan li');
-
-        semuaItem.forEach(item => {
-            const judul = item.textContent.toLowerCase();
-            if (judul.includes(inputan)) {
-                item.style.display = "";
-            } else {
-                item.style.display = "none";
-            }
-        });
-    }
-
-    // Fungsi baru untuk tombol acak
-    function bukaCatatanAcak() {
-        // 1. Daftar semua halaman catatanmu
-        const semuaCatatan = [
-            'catatan/belajar-js.html',
-            'catatan/trik-css.html',
-            'catatan/ide-proyek.html',
-            'catatan/perintah-git.html',
-            'catatan/setup-laptop.html'
-        ];
-
-        // 2. Pilih satu halaman secara acak (INI BAGIAN YANG BENAR)
-        const halamanAcak = semuaCatatan[Math.floor(Math.random() * semuaCatatan.length)];
-
-        // 3. Buka halaman yang terpilih
-        window.location.href = halamanAcak;
-    }
-</script>
-
+        function cariCatatan() {
+            const inputan = document.getElementById('kotakCari').value.toLowerCase();
+            const semuaItem = document.querySelectorAll('#daftarCatatan li');
+    
+            semuaItem.forEach(item => {
+                const judul = item.textContent.toLowerCase();
+                if (judul.includes(inputan)) {
+                    item.style.display = "";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        }
+    
+        function bukaCatatanAcak() {
+            const semuaCatatan = [
+                'catatan/belajar-js.html',
+                'catatan/trik-css.html',
+                'catatan/ide-proyek.html',
+                'catatan/perintah-git.html',
+                'catatan/setup-laptop.html'
+            ];
+            
+            const halamanAcak = semuaCatatan[Math.floor(Math.random() * semuaCatatan.length)];
+            
+            window.location.href = halamanAcak;
+        }
+    </script>
 
 </body>
 </html>
