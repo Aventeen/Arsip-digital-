@@ -89,50 +89,58 @@
     </div>
 
     <script>
-        function cariCatatan() {
-            const inputan = document.getElementById('kotakCari').value.toLowerCase();
-            const semuaItem = document.querySelectorAll('#daftarCatatan li');
-    
-            semuaItem.forEach(item => {
-                const judul = item.textContent.toLowerCase();
-                if (judul.includes(inputan)) {
-                    item.style.display = "";
-                } else {
-                    item.style.display = "none";
-                }
-            });
-        }
-    
-        function bukaCatatanAcak() {
-            const suaraKlik = new Audio('assets/klik.mp3'); // Kode suara tetap kita pakai nanti
-            // suaraKlik.play(); // Kita matikan dulu sementara karena belum upload file suara
-            
-            const semuaCatatan = [
-                'catatan/belajar-js.html',
-                'catatan/trik-css.html',
-                'catatan/ide-proyek.html',
-                'catatan/perintah-git.html',
-                'catatan/setup-laptop.html'
-            ];
-            
-            const halamanAcak = semuaCatatan[Math.floor(Math.random() * semuaCatatan.length)];
-            
-            setTimeout(function() {
-                window.location.href = halamanAcak;
-            }, 150);
+    // Ini elemen tombol "Klik Aku!"
+    const btn = document.getElementById("klik");
+    // Ini elemen audio (<audio id="sfx">) untuk suara klik
+    const sfx = document.getElementById("sfx"); 
+
+    // Daftar semua halaman catatanmu. PASTIKAN PATH INI BENAR DAN LENGKAP YA!
+    const semuaCatatan = [
+        'catatan/belajar-js.html', // Contoh: sesuaikan dengan nama file catatanmu
+        'catatan/trik-css.html',   // Contoh: sesuaikan dengan nama file catatanmu
+        'catatan/ide-proyek.html', // Contoh: sesuaikan dengan nama file catatanmu
+        'catatan/perintah-git.html',// Contoh: sesuaikan dengan nama file catatanmu
+        'catatan/setup-laptop.html' // Contoh: sesuaikan dengan nama file catatanmu
+        // Kalau ada catatan baru, tambahin di sini ya, bro!
+    ];
+
+    // Fungsi utama yang akan dijalankan saat tombol diklik
+    btn.addEventListener("click", () => {
+        // 1. Putar suara
+        if (sfx) { // Pastikan elemen audio ditemukan
+            sfx.currentTime = 0; // Mulai dari awal (penting kalau diklik cepat)
+            sfx.play();
         }
 
-        // --- KODE BARU PALING AMPUH UNTUK ANIMASI ---
-        const tombolUntukAnimasi = document.getElementById('tombolAcak');
+        // 2. Tambahkan efek animasi (kelas "effect")
+        btn.classList.add("effect");
 
-        tombolUntukAnimasi.addEventListener('touchstart', function() {
-            tombolUntukAnimasi.classList.add('tombol-ditekan');
-        }, false);
+        // 3. Pilih satu halaman secara acak dari daftar
+        const halamanAcak = semuaCatatan[Math.floor(Math.random() * semuaCatatan.length)];
 
-        tombolUntukAnimasi.addEventListener('touchend', function() {
-            tombolUntukAnimasi.classList.remove('tombol-ditekan');
-        }, false);
-    </script>
+        // 4. Setelah sedikit jeda (agar suara sempat main dan animasi terlihat), hapus efek dan pindah halaman
+        setTimeout(() => {
+            btn.classList.remove("effect"); // Hapus efek animasi
+            window.location.href = halamanAcak; // Pindah ke halaman catatan acak
+        }, 200); // Jeda 200 milidetik (0.2 detik). Bisa kamu atur sesuai selera.
+    });
 
-</body>
+    // Ini fungsi pencarian (kalau kamu punya fitur search)
+    function cariCatatan() {
+        const inputan = document.getElementById('kotakCari').value.toLowerCase();
+        const semuaItem = document.querySelectorAll('#daftarCatatan li');
+
+        semuaItem.forEach(item => {
+            const judul = item.textContent.toLowerCase();
+            if (judul.includes(inputan)) {
+                item.style.display = "";
+            } else {
+                item.style.display = "none";
+            }
+        });
+    }
+</script>
+
+
+        </body>
 </html>
