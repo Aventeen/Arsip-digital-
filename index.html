@@ -57,8 +57,11 @@
             -webkit-user-select: none;
             -ms-user-select: none;
             user-select: none;
+            /* Tambahan: biar transisi lebih mulus */
+            transition: transform 0.1s ease, opacity 0.1s ease;
         }
-        button:active {
+        /* GANTI button:active MENJADI CLASS BARU INI */
+        .tombol-ditekan {
             transform: scale(0.98);
             opacity: 0.9;
         }
@@ -72,7 +75,7 @@
 
         <input type="text" id="kotakCari" onkeyup="cariCatatan()" placeholder="Ketik judul catatan...">
 
-        <button onclick="bukaCatatanAcak()" style="width:100%; padding: 12px; margin-bottom: 20px; border: none; background-color: #28a745; color: white; border-radius: 6px; font-size: 16px; cursor: pointer;">
+        <button id="tombolAcak" onclick="bukaCatatanAcak()" style="width:100%; padding: 12px; margin-bottom: 20px; border: none; background-color: #28a745; color: white; border-radius: 6px; font-size: 16px; cursor: pointer;">
             Bawa Aku ke Catatan Acak!
         </button>
 
@@ -101,6 +104,9 @@
         }
     
         function bukaCatatanAcak() {
+            const suaraKlik = new Audio('assets/klik.mp3'); // Kode suara tetap kita pakai nanti
+            // suaraKlik.play(); // Kita matikan dulu sementara karena belum upload file suara
+            
             const semuaCatatan = [
                 'catatan/belajar-js.html',
                 'catatan/trik-css.html',
@@ -111,8 +117,21 @@
             
             const halamanAcak = semuaCatatan[Math.floor(Math.random() * semuaCatatan.length)];
             
-            window.location.href = halamanAcak;
+            setTimeout(function() {
+                window.location.href = halamanAcak;
+            }, 150);
         }
+
+        // --- KODE BARU PALING AMPUH UNTUK ANIMASI ---
+        const tombolUntukAnimasi = document.getElementById('tombolAcak');
+
+        tombolUntukAnimasi.addEventListener('touchstart', function() {
+            tombolUntukAnimasi.classList.add('tombol-ditekan');
+        }, false);
+
+        tombolUntukAnimasi.addEventListener('touchend', function() {
+            tombolUntukAnimasi.classList.remove('tombol-ditekan');
+        }, false);
     </script>
 
 </body>
