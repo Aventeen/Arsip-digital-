@@ -8,21 +8,36 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4; /* Warna latar belakang terang */
-            color: #333; /* Warna teks terang */
+            padding: 0; /* Ubah padding body jadi 0 untuk background full screen */
+            background-color: #f4f4f4;
+            color: #333;
             line-height: 1.6;
-            transition: background-color 0.3s ease, color 0.3s ease; /* Transisi halus */
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow: hidden; /* Penting untuk animasi background */
+        }
+
+        /* Styling untuk Canvas background */
+        #backgroundCanvas {
+            position: fixed; /* Tetap di layar */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Pastikan di belakang semua konten */
+            background-color: #f4f4f4; /* Warna dasar background */
+            transition: background-color 0.3s ease;
         }
 
         .container {
             max-width: 800px;
             margin: 20px auto;
             padding: 30px;
-            background-color: #fff; /* Warna kontainer terang */
+            background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Transisi halus */
+            position: relative; /* Penting agar container tetap di atas canvas */
+            z-index: 1; /* Pastikan container di atas canvas */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         h1 {
@@ -45,8 +60,8 @@
             border-radius: 6px;
             font-size: 16px;
             box-sizing: border-box;
-            background-color: #fff; /* Latar belakang input terang */
-            color: #333; /* Teks input terang */
+            background-color: #fff;
+            color: #333;
             transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
 
@@ -56,7 +71,7 @@
             padding: 12px;
             margin-bottom: 20px;
             border: none;
-            background-color: #28a745; /* Warna hijau */
+            background-color: #28a745;
             color: white;
             border-radius: 6px;
             font-size: 16px;
@@ -117,17 +132,20 @@
 
         /* --- DARK MODE STYLES --- */
         body.dark-mode {
-            background-color: #282c34; /* Latar belakang gelap */
-            color: #abb2bf; /* Warna teks gelap */
+            background-color: #282c34;
+            color: #abb2bf;
+        }
+        body.dark-mode #backgroundCanvas { /* Update canvas color for dark mode */
+            background-color: #282c34;
         }
 
         body.dark-mode .container {
-            background-color: #3a404a; /* Kontainer gelap */
+            background-color: #3a404a;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
         body.dark-mode h1 {
-            color: #61afef; /* Warna judul gelap */
+            color: #61afef;
         }
 
         body.dark-mode p {
@@ -135,8 +153,8 @@
         }
 
         body.dark-mode #kotakCari {
-            background-color: #4b5263; /* Latar belakang input gelap */
-            color: #abb2bf; /* Teks input gelap */
+            background-color: #4b5263;
+            color: #abb2bf;
             border-color: #5c6370;
         }
 
@@ -145,12 +163,12 @@
         }
 
         body.dark-mode #daftarCatatan li {
-            background-color: #3a404a; /* Latar belakang item list gelap */
+            background-color: #3a404a;
             border-color: #4b5263;
         }
 
         body.dark-mode #daftarCatatan a {
-            color: #98c379; /* Warna link gelap */
+            color: #98c379;
         }
 
         body.dark-mode #daftarCatatan a:hover {
@@ -159,17 +177,17 @@
 
         /* --- MODE TOGGLE BUTTON --- */
         #modeToggle {
-            position: fixed; /* Posisi tetap di layar */
-            top: 20px; /* Jarak dari atas */
-            left: 20px; /* Jarak dari kiri */
-            background-color: #6c757d; /* Warna abu-abu */
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #6c757d;
             color: white;
             border: none;
             padding: 10px 15px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
-            z-index: 1000; /* Pastikan tombol di atas elemen lain */
+            z-index: 1000;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             transition: background-color 0.3s ease, transform 0.1s ease-out;
         }
@@ -179,12 +197,11 @@
         }
 
         #modeToggle:active {
-            transform: scale(0.98); /* Efek klik */
+            transform: scale(0.98);
         }
 
-        /* Gaya tombol mode toggle saat Dark Mode aktif */
         body.dark-mode #modeToggle {
-            background-color: #5c6370; /* Warna tombol gelap */
+            background-color: #5c6370;
         }
         body.dark-mode #modeToggle:hover {
             background-color: #4b5263;
@@ -193,6 +210,8 @@
 </head>
 <body>
     <button id="modeToggle">Mode Gelap</button>
+
+    <canvas id="backgroundCanvas"></canvas>
 
     <div class="container">
         <h1>Perpustakaan Digital Pribadi Bro Elite</h1>
@@ -222,8 +241,8 @@
         const sfx = document.getElementById("sfx"); 
         const kotakCari = document.getElementById("kotakCari");
         const daftarLinkCatatan = document.querySelectorAll("#daftarCatatan li a");
-        const modeToggleBtn = document.getElementById("modeToggle"); // Elemen tombol mode toggle
-        const body = document.body; // Elemen <body>
+        const modeToggleBtn = document.getElementById("modeToggle");
+        const body = document.body;
 
         const semuaCatatan = [
             'catatan/belajar-js.html',
@@ -237,7 +256,6 @@
         let canPlaySoundFlag = true;
         const soundCooldown = 150; // Cooldown 150ms
 
-        // --- Fungsi untuk Memutar Suara dengan Cooldown ---
         function playClickSound() {
             if (sfx && canPlaySoundFlag) {
                 canPlaySoundFlag = false;
@@ -292,8 +310,6 @@
         }
 
         // --- LOGIKA DARK/LIGHT MODE ---
-
-        // Fungsi untuk mengaplikasikan mode
         function applyMode(mode) {
             if (mode === 'dark') {
                 body.classList.add('dark-mode');
@@ -302,14 +318,17 @@
                 body.classList.remove('dark-mode');
                 modeToggleBtn.textContent = 'Mode Gelap';
             }
+            // Update canvas background color immediately when mode changes
+            const canvas = document.getElementById('backgroundCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = body.classList.contains('dark-mode') ? '#282c34' : '#f4f4f4'; // Match body background
+            ctx.fillRect(0, 0, canvas.width, canvas.height); // Clear and redraw with new color
         }
 
-        // Cek preferensi mode dari localStorage saat halaman dimuat
         const savedMode = localStorage.getItem('themeMode');
         if (savedMode) {
             applyMode(savedMode);
         } else {
-            // Jika belum ada preferensi, cek preferensi sistem (opsional)
             if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
                 applyMode('dark');
             } else {
@@ -317,18 +336,176 @@
             }
         }
 
-        // Event listener untuk tombol mode toggle
         modeToggleBtn.addEventListener("click", () => {
             playClickSound(); // Mainkan suara saat tombol mode toggle diklik
-
             if (body.classList.contains('dark-mode')) {
                 applyMode('light');
-                localStorage.setItem('themeMode', 'light'); // Simpan preferensi
+                localStorage.setItem('themeMode', 'light');
             } else {
                 applyMode('dark');
-                localStorage.setItem('themeMode', 'dark'); // Simpan preferensi
+                localStorage.setItem('themeMode', 'dark');
             }
         });
+
+        // --- LOGIKA ANIMASI LATAR BELAKANG INTERAKTIF ---
+        const canvas = document.getElementById('backgroundCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = {
+            x: null,
+            y: null,
+            radius: 150 // Radius interaksi mouse
+        };
+
+        // Atur ukuran canvas
+        function setCanvasSize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            // Pastikan background canvas diperbarui saat ukuran berubah
+            ctx.fillStyle = body.classList.contains('dark-mode') ? '#282c34' : '#f4f4f4';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+        setCanvasSize();
+        window.addEventListener('resize', setCanvasSize);
+
+        // Event listener untuk pergerakan mouse
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
+        window.addEventListener('mouseout', () => { // Reset mouse jika keluar layar
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        // Fungsi Particle (titik)
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x;
+                this.y = y;
+                this.directionX = directionX;
+                this.directionY = directionY;
+                this.size = size;
+                this.color = color;
+            }
+
+            // Method untuk menggambar particle
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+
+            // Method untuk update posisi particle
+            update() {
+                // Jika particle keluar batas, kembalikan ke sisi lain
+                if (this.x + this.size > canvas.width || this.x - this.size < 0) {
+                    this.directionX = -this.directionX;
+                }
+                if (this.y + this.size > canvas.height || this.y - this.size < 0) {
+                    this.directionY = -this.directionY;
+                }
+
+                this.x += this.directionX;
+                this.y += this.directionY;
+
+                // Interaksi mouse dengan particle
+                if (mouse.x && mouse.y) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < mouse.radius + this.size) {
+                        if (mouse.x < this.x && this.x < canvas.width - this.size * 10) {
+                            this.x += 10;
+                        }
+                        if (mouse.x > this.x && this.x > this.size * 10) {
+                            this.x -= 10;
+                        }
+                        if (mouse.y < this.y && this.y < canvas.height - this.size * 10) {
+                            this.y += 10;
+                        }
+                        if (mouse.y > this.y && this.y > this.size * 10) {
+                            this.y -= 10;
+                        }
+                    }
+                }
+                this.draw();
+            }
+        }
+
+        // Fungsi untuk membuat particle
+        function initParticles(num) {
+            particles = [];
+            for (let i = 0; i < num; i++) {
+                let size = Math.random() * 5 + 1; // Ukuran particle
+                let x = Math.random() * (canvas.width - size * 2) + size;
+                let y = Math.random() * (canvas.height - size * 2) + size;
+                let directionX = (Math.random() * 0.4) - 0.2; // Kecepatan X
+                let directionY = (Math.random() * 0.4) - 0.2; // Kecepatan Y
+                let color = 'rgba(170, 178, 191, 0.8)'; // Warna abu-abu transparan
+                // Warna particle akan berubah jika dark mode aktif
+                if (body.classList.contains('dark-mode')) {
+                    color = 'rgba(152, 195, 121, 0.8)'; // Warna hijau muda di dark mode
+                }
+
+                particles.push(new Particle(x, y, directionX, directionY, size, color));
+            }
+        }
+
+        // Fungsi untuk menghubungkan particle
+        function connectParticles() {
+            let opacityValue = 1;
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a; b < particles.length; b++) {
+                    let distance = ((particles[a].x - particles[b].x) * (particles[a].x - particles[b].x)) +
+                                   ((particles[a].y - particles[b].y) * (particles[a].y - particles[b].y));
+                    if (distance < (canvas.width / 7) * (canvas.height / 7)) { // Jarak antar particle untuk terhubung
+                        opacityValue = 1 - (distance / 20000); // Semakin jauh semakin transparan
+                        ctx.strokeStyle = `rgba(170, 178, 191, ${opacityValue})`;
+                        if (body.classList.contains('dark-mode')) {
+                            ctx.strokeStyle = `rgba(97, 175, 239, ${opacityValue})`; // Warna biru muda di dark mode
+                        }
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        // Fungsi animasi utama
+        function animateParticles() {
+            requestAnimationFrame(animateParticles);
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Bersihkan canvas
+
+            // Update background color in case dark mode changes
+            ctx.fillStyle = body.classList.contains('dark-mode') ? '#282c34' : '#f4f4f4';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+            }
+            connectParticles();
+        }
+
+        // Inisialisasi particle saat halaman dimuat
+        initParticles(100); // Buat 100 particle
+        animateParticles();
+
+        // Update particle colors and number when dark mode is toggled or resized
+        // This is important to adapt the animation to dark mode changes
+        modeToggleBtn.addEventListener('click', () => {
+            initParticles(100); // Re-initialize to update colors
+            animateParticles(); // Restart animation
+        });
+        window.addEventListener('resize', () => {
+             initParticles(100); // Re-initialize on resize
+        });
+
     </script>
 </body>
 </html>
