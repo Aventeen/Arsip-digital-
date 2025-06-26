@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perpustakaan Pribadi Gue</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #1c1e21;
+            padding: 20px;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        #kotakCari {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+        #daftarCatatan {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #daftarCatatan li {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        #daftarCatatan li:last-child {
+            border-bottom: none;
+        }
+        #daftarCatatan a {
+            text-decoration: none;
+            color: #0d6efd;
+            font-weight: 500;
+        }
+        #daftarCatatan a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Perpustakaan Pribadi Gue</h2>
+        <p>Cari catatan pentingmu di sini.</p>
+
+        <input type="text" id="kotakCari" onkeyup="cariCatatan()" placeholder="Ketik judul catatan...">
+
+        <ul id="daftarCatatan">
+            <li><a href="catatan/belajar-js.html">Belajar Dasar JavaScript</a></li>
+            <li><a href="catatan/trik-css.html">Trik CSS Flexbox Modern</a></li>
+            <li><a href="catatan/ide-proyek.html">Kumpulan Ide Proyek Web Keren</a></li>
+            <li><a href="catatan/perintah-git.html">Perintah Dasar Git yang Wajib Hafal</a></li>
+            <li><a href="catatan/setup-laptop.html">Cara Setup Laptop Baru untuk Ngoding</a></li>
+            </ul>
+    </div>
+
+    <script>
+    function cariCatatan() {
+        // Ambil teks yang diketik di kotak pencarian, ubah jadi huruf kecil
+        const inputan = document.getElementById('kotakCari').value.toLowerCase();
+        
+        // Ambil semua elemen 'li' (item list) dari daftar catatan
+        const semuaItem = document.querySelectorAll('#daftarCatatan li');
+
+        // Loop atau periksa satu per satu setiap item
+        semuaItem.forEach(item => {
+            // Ambil teks judul dari link di dalam item, ubah jadi huruf kecil
+            const judul = item.textContent.toLowerCase();
+
+            // Cek: Apakah judul catatan mengandung teks yang diketik?
+            if (judul.includes(inputan)) {
+                item.style.display = ""; // Kalau cocok, tampilkan itemnya
+            } else {
+                item.style.display = "none"; // Kalau nggak cocok, sembunyikan
+            }
+        });
+    }
+    </script>
+
+</body>
+</html>
