@@ -92,7 +92,40 @@
             }
         });
     }
-    </script>
+    <script>
+    // Fungsi untuk pencarian (ini sudah ada)
+    function cariCatatan() {
+        const inputan = document.getElementById('kotakCari').value.toLowerCase();
+        const semuaItem = document.querySelectorAll('#daftarCatatan li');
+
+        semuaItem.forEach(item => {
+            const judul = item.textContent.toLowerCase();
+            if (judul.includes(inputan)) {
+                item.style.display = "";
+            } else {
+                item.style.display = "none";
+            }
+        });
+    }
+
+    // --- FUNGSI BARU UNTUK TOMBOL ACAK ---
+    function bukaCatatanAcak() {
+        // 1. Daftar semua halaman catatanmu
+        const semuaCatatan = [
+            'catatan/belajar-js.html',
+            'catatan/trik-css.html',
+            'catatan/ide-proyek.html',
+            'catatan/perintah-git.html',
+            'catatan/setup-laptop.html'
+        ];
+
+        // 2. Pilih satu halaman secara acak
+        const halamanAcak = semuaCatatan[Math.floor(Math.random() * semuaCatatan.length)];
+
+        // 3. Buka halaman yang terpilih
+        window.location.href = halamanAcak;
+    }
+</script>
 
 </body>
 </html>
