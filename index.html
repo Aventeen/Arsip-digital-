@@ -93,7 +93,7 @@
         });
     }
     <script>
-    // Fungsi untuk pencarian (ini sudah ada)
+    // Fungsi untuk pencarian
     function cariCatatan() {
         const inputan = document.getElementById('kotakCari').value.toLowerCase();
         const semuaItem = document.querySelectorAll('#daftarCatatan li');
@@ -108,7 +108,7 @@
         });
     }
 
-    // --- FUNGSI BARU UNTUK TOMBOL ACAK ---
+    // Fungsi baru untuk tombol acak
     function bukaCatatanAcak() {
         // 1. Daftar semua halaman catatanmu
         const semuaCatatan = [
@@ -119,14 +119,14 @@
             'catatan/setup-laptop.html'
         ];
 
-        // 2. Pilih satu halaman secara acak
-        const halamanAcak =
-        semua catatan[Math.floor(Math.random() *       catatan.length)];
+        // 2. Pilih satu halaman secara acak (INI BAGIAN YANG BENAR)
+        const halamanAcak = semuaCatatan[Math.floor(Math.random() * semuaCatatan.length)];
 
         // 3. Buka halaman yang terpilih
         window.location.href = halamanAcak;
     }
 </script>
+
 
 </body>
 </html>
